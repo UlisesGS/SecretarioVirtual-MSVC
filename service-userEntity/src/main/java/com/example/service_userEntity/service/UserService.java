@@ -19,7 +19,7 @@ public class UserService {
         return userList;
     }
 
-    public UserEntity getUserById(Long id){
+    public UserEntity getUserById(String id){
         return userList.stream()
                 .filter(user->user.getId().equals(id))
                 .findFirst()
@@ -31,7 +31,7 @@ public class UserService {
         return userList.getLast();
     }
 
-    public boolean removeUserById(Long id) {
+    public boolean removeUserById(String id) {
         return userList.removeIf(user -> user.getId().equals(id));
     }
 }
