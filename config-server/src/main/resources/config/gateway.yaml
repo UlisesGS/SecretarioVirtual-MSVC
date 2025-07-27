@@ -1,5 +1,5 @@
-erver:
-  port: 8060
+server:
+  port: 8080
 
 eureka:
   client:
@@ -15,10 +15,10 @@ spring:
   cloud:
     gateway:
       routes:
-        #- id: employee-service
-        # uri: lb://employee-service
-        # predicates:
-        #   - Path=/api/v1/employee/**
+        - id: service-userEntity
+          uri: lb://service-user
+          predicates:
+           - Path=/**
         #- id: department-service
         # uri: lb://department-service
         # predicates:
