@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DB:db}
+      username: ${MONGO_USER:root}
+      password: ${MONGO_PASSWORD:root}
+      authentication-database: ${MONGO_AUTH_DB:admin}
+  config:
+    activate:
+      on-profile: default
+
