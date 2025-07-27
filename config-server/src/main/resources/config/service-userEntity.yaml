@@ -21,13 +21,12 @@ management:
       health:
         show-details: always
 
-
 spring:
   cloud:
     discovery:
       enabled: true
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    url: jdbc:postgresql://${USERENTITY_DB_HOST}:${USERENTITY_DB_PORT}/${USERENTITY_DB_NAME}
     username: ${USERENTITY_DB_USERNAME}
     password: ${USERENTITY_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver

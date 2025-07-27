@@ -3,3 +3,4 @@ spring:
     name: service-userEntity
   config:
     import: "optional:configserver:http://localhost:8088"
+
