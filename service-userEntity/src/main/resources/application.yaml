@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: service-userEntity
+  config:
+    import: optional:configserver:http://localhost:8060
 
 eureka:
   client:
