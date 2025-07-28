@@ -1,6 +1,7 @@
 package com.example.service_userEntity.service;
 
 import com.example.service_userEntity.model.UserEntity;
+import com.example.service_userEntity.model.dtos.UserEntityDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    UserEntity create(UserEntity userEntity);
+    UserEntityDto create(UserEntityDto user);
 
-    List<UserEntity> listAll();
+    List<UserEntityDto> listAll();
 
 }
