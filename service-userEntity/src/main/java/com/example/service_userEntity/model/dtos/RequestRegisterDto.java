@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
 
-public record UserEntityDto(
-        String id,
+public record RequestRegisterDto(
+
         @NotBlank (message = "El username es obligatorio.")
         String username,
         @NotBlank(message = "El email es obligatorio.")
