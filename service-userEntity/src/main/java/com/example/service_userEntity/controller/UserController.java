@@ -22,9 +22,9 @@ public class UserController {
 //        return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
 //    }
 
-    @GetMapping("/get-credentials")
-    public ResponseEntity<ResponseCredentialsDto> getCredentials(@RequestBody @Valid RequestLoginDto loginRequest) {
-        return new ResponseEntity<>(userService.getCredentials(loginRequest), HttpStatus.OK);
+    @GetMapping("/get-credentials/{email}")
+    public ResponseEntity<ResponseCredentialsDto> getCredentials(@RequestParam String email) {
+        return new ResponseEntity<>(userService.getCredentials(email), HttpStatus.OK);
     }
 
     @PostMapping("/register")
