@@ -1,6 +1,7 @@
 package com.example.service_userEntity.controller;
 
-import com.example.service_userEntity.model.dtos.UserEntityDto;
+import com.example.service_userEntity.model.dtos.RequestLoginDto;
+import com.example.service_userEntity.model.dtos.RequestRegisterDto;
 import com.example.service_userEntity.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,13 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid UserEntityDto user) {
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody @Valid RequestLoginDto loginRequest) {
+//        return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
+//    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> create(@RequestBody @Valid RequestRegisterDto user) {
         return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
     }
 
@@ -25,4 +31,8 @@ public class UserController {
         return new ResponseEntity<>(userService.listAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/getById/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable String userId) {
+        return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
+    }
 }
