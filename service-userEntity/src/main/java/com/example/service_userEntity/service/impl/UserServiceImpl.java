@@ -35,10 +35,10 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public ResponseCredentialsDto getCredentials(RequestLoginDto requestLoginDto) {
-        UserEntity userEntity = userRepository.findByEmail(requestLoginDto.email())
+    public ResponseCredentialsDto getCredentials(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(()-> new NoSuchElementException(
-                        "Usuario con email: " + requestLoginDto.email() + " no encontrado"
+                        "Usuario con email: " + email + " no encontrado"
                 ));
         ResponseCredentialsDto credentialsDto=userMapper.userEntityToResponseCredentialsDto(userEntity);
         return credentialsDto;
