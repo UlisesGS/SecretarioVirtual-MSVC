@@ -1,7 +1,6 @@
 package com.example.service_userEntity.service;
 
-import com.example.service_userEntity.model.UserEntity;
-import com.example.service_userEntity.model.dtos.UserEntityDto;
+import com.example.service_userEntity.model.dtos.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,8 +8,16 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    UserEntityDto create(UserEntityDto user);
+//    ResponseLoginDto login(RequestLoginDto requestLoginDto);
 
-    List<UserEntityDto> listAll();
+    ResponseCredentialsDto getCredentials(RequestLoginDto requestLoginDto);
+
+    ResponseRegisterDto create(RequestRegisterDto user);
+
+    List<ResponseUserDto> listAll();
+
+    ResponseUserDto findById(String id);
+
+
 
 }
