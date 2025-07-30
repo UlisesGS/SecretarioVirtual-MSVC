@@ -5,6 +5,8 @@ import com.example.service_security.dto.ResponseLoginDto;
 import com.example.service_security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,6 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<ResponseLoginDto> login(@RequestBody RequestLoginDto request) {
-        return ResponseEntity.ok(authService.login(request));
+        return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 }
