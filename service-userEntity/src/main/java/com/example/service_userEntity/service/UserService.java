@@ -10,7 +10,7 @@ public interface UserService {
 
 //    ResponseLoginDto login(RequestLoginDto requestLoginDto);
 
-    ResponseCredentialsDto getCredentials(RequestLoginDto requestLoginDto);
+    ResponseCredentialsDto getCredentials(String email);
 
     ResponseRegisterDto create(RequestRegisterDto user);
 
