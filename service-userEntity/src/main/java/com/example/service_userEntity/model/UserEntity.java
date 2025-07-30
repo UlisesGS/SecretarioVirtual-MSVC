@@ -1,11 +1,9 @@
 package com.example.service_userEntity.model;
 
 
+import com.example.service_userEntity.model.enums.Role;
+import com.example.service_userEntity.model.enums.UserState;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,20 +18,22 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    private String id;
 
-    @NotBlank (message = "El username es obligatorio.")
-    String username;
-    @NotBlank(message = "El email es obligatorio.")
-    @Email(message = "EL formato de email es invalido.")
-    String email;
-    @NotBlank(message = "El password es obligatorio.")
-    String password;
-    @Past(message = "Fecha invalida.")
-    LocalDate birthdate;
-    @NotNull(message = "El dni es obligatorio.")
+    private String username;
+    private String email;
+    private String password;
+    private LocalDate birthdate;
     int dni;
+    private UserState state;
+    private Role rol;
+
+    @PrePersist
+    private void preStateAndRol(){
+        this.state=UserState.DESACTIVADO;
+        this.rol=Role.USER;
+    }
+
 }
