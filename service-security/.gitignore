@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## key private
+src/main/resources/keys/*
+!src/main/resources/keys/public.pem

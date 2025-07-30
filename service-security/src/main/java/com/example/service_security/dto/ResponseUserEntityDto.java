@@ -1,8 +1,29 @@
 package com.example.service_security.dto;
 
-public record ResponseUserEntityDto(
-        String id,
-        String email,
-        String name,
-        String role
-) {}
+import com.example.service_security.model.Role;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseUserEntityDto {
+    private String id;
+    private String email;
+    private String name;
+    private Role role;
+    private String password;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}

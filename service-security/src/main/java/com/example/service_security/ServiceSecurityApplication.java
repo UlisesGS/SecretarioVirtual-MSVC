@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.example.security.feign")
+@EnableFeignClients(basePackages = "com.example.service_security.feign")
 public class ServiceSecurityApplication {
 
 	public static void main(String[] args) {
