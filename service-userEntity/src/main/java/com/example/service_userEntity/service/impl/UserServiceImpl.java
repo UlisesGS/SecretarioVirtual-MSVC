@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
                         "Usuario con email: " + email + " no encontrado"
                 ));
         ResponseCredentialsDto credentialsDto=userMapper.userEntityToResponseCredentialsDto(userEntity);
+        System.out.println(credentialsDto);
         return credentialsDto;
     }
 

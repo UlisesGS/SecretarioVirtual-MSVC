@@ -39,8 +39,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserDetails userDetails = loadUserByUsername(request.email());
 
+
         // Verificar password con BCrypt
-        if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
+//        if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
+        System.out.println(request.password());
+        System.out.println(userDetails.getPassword());
+        if (!request.password().equals(userDetails.getPassword())) {
             throw new InvalidUserCredentialsException("Usuario o contraseña inválidos");
         }
 
@@ -60,13 +64,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         ResponseUserEntityDto user = userClient.getByEmail(email); // creamos este endpoint en user-entity
-
+        System.out.println(user.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
         }
         List<String> userRole = new ArrayList<>();
+        System.out.println(user.getRole());
 
         userRole.add(user.getRole().toString());
+
 
         if (userRole.isEmpty()){
             throw new InvalidUserCredentialsException("Error en el sistema.");

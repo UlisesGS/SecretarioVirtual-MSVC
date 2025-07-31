@@ -9,7 +9,7 @@ public record ResponseCredentialsDto(
         String id,
         String email,
         String username,
-        Role rol,
+        Role role,
         String password
 ) {
 }

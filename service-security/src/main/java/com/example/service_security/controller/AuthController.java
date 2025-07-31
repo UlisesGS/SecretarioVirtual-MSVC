@@ -20,8 +20,9 @@ public class AuthController {
     @Autowired
     private UserDetailsServiceImpl authService;
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<ResponseLoginDto> login(@RequestBody RequestLoginDto request) {
+        System.out.println("ENTRÓ AL ENDPOINT DE LOGIN");
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 }
