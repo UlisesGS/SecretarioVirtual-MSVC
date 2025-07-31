@@ -6,8 +6,7 @@ import com.example.service_userEntity.model.dtos.*;
 import com.example.service_userEntity.repositoy.UserRepository;
 import com.example.service_userEntity.service.UserService;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.security.authentication.BadCredentialsException;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +19,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
 //    @Override
 //    public ResponseLoginDto login(RequestLoginDto requestLoginDto) {
@@ -48,6 +49,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseRegisterDto create(RequestRegisterDto user) {
         UserEntity userEntity= userMapper.registerDtoToUserEntity(user);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        System.out.println(userEntity.getPassword());
         userEntity=userRepository.save(userEntity);
         ResponseRegisterDto responseRegisterDto =userMapper.userEntityToResponseRegister(userEntity);
         return responseRegisterDto;
