@@ -30,12 +30,12 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserState state;
     @Enumerated(EnumType.STRING)
-    private Role rol;
+    private Role role;
 
     @PrePersist
     private void preStateAndRol(){
         this.state=UserState.DESACTIVADO;
-        this.rol=Role.USER;
+        this.role=Role.USER;
     }
 
 }
