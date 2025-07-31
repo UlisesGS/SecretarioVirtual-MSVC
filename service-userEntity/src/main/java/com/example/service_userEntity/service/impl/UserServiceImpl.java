@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()-> new NoSuchElementException(
                         "Usuario con email: " + email + " no encontrado"
                 ));
+        System.out.println(userEntity);
         ResponseCredentialsDto credentialsDto=userMapper.userEntityToResponseCredentialsDto(userEntity);
         System.out.println(credentialsDto);
         return credentialsDto;
