@@ -23,7 +23,7 @@ public class UserController {
 //    }
 
     @GetMapping("/get-credentials/{email}")
-    public ResponseEntity<ResponseCredentialsDto> getCredentials(@RequestParam String email) {
+    public ResponseEntity<ResponseCredentialsDto> getCredentials(@PathVariable String email) {
         return new ResponseEntity<>(userService.getCredentials(email), HttpStatus.OK);
     }
 

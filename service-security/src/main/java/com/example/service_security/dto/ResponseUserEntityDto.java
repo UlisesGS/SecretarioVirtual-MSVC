@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ResponseUserEntityDto {
     private String id;
     private String email;
-    private String name;
+    private String username;
     private Role role;
     private String password;
 

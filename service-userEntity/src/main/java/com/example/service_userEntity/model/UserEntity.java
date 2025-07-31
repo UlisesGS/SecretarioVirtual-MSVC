@@ -27,7 +27,9 @@ public class UserEntity {
     private String password;
     private LocalDate birthdate;
     int dni;
+    @Enumerated(EnumType.STRING)
     private UserState state;
+    @Enumerated(EnumType.STRING)
     private Role rol;
 
     @PrePersist
