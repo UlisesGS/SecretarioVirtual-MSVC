@@ -40,11 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserDetails userDetails = loadUserByUsername(request.email());
 
 
-        // Verificar password con BCrypt
-//        if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
-        System.out.println(request.password());
-        System.out.println(userDetails.getPassword());
-        if (!request.password().equals(userDetails.getPassword())) {
+         //Verificar password con BCrypt
+        if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
             throw new InvalidUserCredentialsException("Usuario o contraseña inválidos");
         }
 
