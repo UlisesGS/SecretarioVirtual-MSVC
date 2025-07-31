@@ -25,4 +25,11 @@ public class AuthController {
         System.out.println("ENTRÓ AL ENDPOINT DE LOGIN");
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
+
+    @PostMapping("/auth/refresh")
+    public ResponseLoginDto refresh(@RequestBody RequestRefreshDto request) {
+        // Validar refresh token
+        // Generar nuevo access token
+        // Devolverlo al front
+    }
 }
