@@ -12,6 +12,6 @@ public record ResponseUserDto(
         LocalDate birthdate,
         int dni,
         UserState state,
-        Role rol
+        Role role
 ) {
 }
