@@ -4,6 +4,7 @@ import com.example.service_security.dto.RequestLoginDto;
 import com.example.service_security.dto.RequestRefreshDto;
 import com.example.service_security.dto.ResponseLoginDto;
 import com.example.service_security.service.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,8 @@ public class AuthController {
         return new ResponseEntity<>(authService.login(request, response), HttpStatus.OK);
     }
 
-//    @PostMapping("/refresh")
-//    public ResponseLoginDto refresh(@RequestBody RequestRefreshDto request) {
-//        // Validar refresh token
-//        // Generar nuevo access token
-//        // Devolverlo al front
-//        return new ResponseLoginDto();
-//    }
+    @PostMapping("/refresh")
+    public ResponseEntity<ResponseLoginDto> refresh(HttpServletRequest request) {
+        return new ResponseEntity<>(authService.refresh(request), HttpStatus.OK);
+    }
 }
