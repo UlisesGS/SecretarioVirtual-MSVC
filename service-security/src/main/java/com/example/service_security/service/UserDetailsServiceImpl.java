@@ -7,6 +7,8 @@ import com.example.service_security.exception.InvalidUserCredentialsException;
 import com.example.service_security.feign.UserEntityClient;
 import com.example.service_security.jwt.JwtProvider;
 import com.example.service_security.model.Role;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder; // BCrypt
 
-    public ResponseLoginDto login(RequestLoginDto request) {
+    public ResponseLoginDto login(RequestLoginDto request, HttpServletResponse response) {
 
         UserDetails userDetails = loadUserByUsername(request.email());
 
@@ -52,6 +54,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
 
         String refreshToken = jwtProvider.generateRefreshToken(userDetails.getUsername());
+
+        // Configurar cookie JWT
+        Cookie jwtCookie = new Cookie("token", refreshToken);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Cambiar a true en producción con HTTPS
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(60 * 60); // 1 hora
+
+        response.addCookie(jwtCookie);
+
+        // Limpiar cualquier cookie de sesión anterior que pueda causar conflictos
+        Cookie sessionCookie = new Cookie("JSESSIONID", "");
+        sessionCookie.setPath("/");
+        sessionCookie.setMaxAge(0);
+        response.addCookie(sessionCookie);
 
         // Devolver DTO con ambos tokens
         return new ResponseLoginDto(accessToken, refreshToken);
