@@ -8,6 +8,7 @@ import com.example.service_security.feign.UserEntityClient;
 import com.example.service_security.jwt.JwtProvider;
 import com.example.service_security.model.Role;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,25 +42,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserDetails userDetails = loadUserByUsername(request.email());
 
-
+        System.out.println("paso el load");
          //Verificar password con BCrypt
         if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
             throw new InvalidUserCredentialsException("Usuario o contraseña inválidos");
         }
 
+        System.out.println("paso el if");
         // Generar tokens JWT (Access + Refresh)
         String accessToken = jwtProvider.generateToken(
-                Map.of("role", userDetails.getAuthorities()), // agregamos el rol en claims
+                Map.of("role", userDetails.getAuthorities(), "type", "ACCESS"), // agregamos el rol en claims
                 userDetails.getUsername()
         );
-
+        System.out.println("paso el generatetoktn");
         String refreshToken = jwtProvider.generateRefreshToken(userDetails.getUsername());
-
+        System.out.println("paso el generaterefresh");
         // Configurar cookie JWT
         Cookie jwtCookie = new Cookie("token", refreshToken);
         jwtCookie.setHttpOnly(true);
         jwtCookie.setSecure(false); // Cambiar a true en producción con HTTPS
-        jwtCookie.setPath("/");
+        jwtCookie.setPath("/service-security/auth/refresh");
         jwtCookie.setMaxAge(60 * 60); // 1 hora
 
         response.addCookie(jwtCookie);
@@ -103,5 +105,38 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .authorities(authorities)  // o convertir a GrantedAuthorities si hay varios roles
                 .build();
 
+    }
+
+
+    public ResponseLoginDto refresh(HttpServletRequest request) {
+
+        // Buscar el refresh token en las cookies
+        String refreshToken = null;
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    refreshToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (refreshToken == null) {
+            throw new InvalidUserCredentialsException("No se encontró el refresh token en la cookie");
+        }
+
+        // Validar que sea un JWT válido y que sea un refresh token
+        if (!jwtProvider.isTokenValid(refreshToken) || !jwtProvider.isRefreshToken(refreshToken)) {
+            throw new InvalidUserCredentialsException("Refresh token inválido");
+        }
+
+        // Extraer el email del usuario
+        String email = jwtProvider.extractEmail(refreshToken);
+
+        // Generar nuevo access token (NO generamos nuevo refresh token aquí, solo access)
+        String newAccessToken = jwtProvider.generateToken(Map.of(), email);
+
+        // Devolver el nuevo access token
+        return new ResponseLoginDto(newAccessToken, refreshToken);
     }
 }
