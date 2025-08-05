@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "gateway", path = "/service-userentity/users")
 public interface UserEntityClient {
 
-    @GetMapping("/get-credentials/{email}")
+    @GetMapping("/credentials/{email}")
     ResponseUserEntityDto getByEmail(@PathVariable String email);
 }
