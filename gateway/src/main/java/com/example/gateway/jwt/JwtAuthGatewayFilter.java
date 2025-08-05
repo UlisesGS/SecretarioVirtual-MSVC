@@ -24,7 +24,9 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
         String path = request.getPath().toString();
 
         // Rutas públicas (no validar)
-        if (path.startsWith("/auth") || path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
+        if (path.startsWith("/auth/login") ||
+                path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
+                path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
             return chain.filter(exchange);
         }
 
