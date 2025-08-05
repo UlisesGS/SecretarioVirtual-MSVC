@@ -28,6 +28,4 @@ spring:
         # predicates:
       #   - Path=/api/v1/department/**
 jwt:
-  private-key: ${JWT_PRIVATE_KEY}
   public-key: ${JWT_PUBLIC_KEY}
-  expiration: ${JWT_EXPIRATION}
