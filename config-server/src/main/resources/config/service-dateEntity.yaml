@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8084
 
 eureka:
   client:
@@ -26,7 +26,7 @@ spring:
     discovery:
       enabled: true
   datasource:
-    url: jdbc:postgresql://${USERENTITY_DB_HOST}:${USERENTITY_DB_PORT}/${USERENTITY_DB_NAME}
+    url: jdbc:postgresql://${DATENTITY_DB_HOST}:${DATENTITY_DB_PORT}/${DATENTITY_DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
