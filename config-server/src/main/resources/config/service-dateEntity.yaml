@@ -37,8 +37,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-jwt:
-  public-key: ${JWT_PUBLIC_KEY}
+#jwt:
+#  public-key: ${JWT_PUBLIC_KEY}
 
 resilience4j:
   circuitbreaker:

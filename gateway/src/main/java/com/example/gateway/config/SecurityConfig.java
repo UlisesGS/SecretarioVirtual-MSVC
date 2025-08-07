@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/service-security/auth/login").permitAll()
-                        .pathMatchers("/service-date/dates/create-date").permitAll()
+                        .pathMatchers("/service-dateentity/dates/create-date").permitAll()
                         .pathMatchers("/service-userentity/users/register",
                                 "/service-userentity/users/credentials/*").permitAll()
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
