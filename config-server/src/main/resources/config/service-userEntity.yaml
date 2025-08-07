@@ -1,0 +1,78 @@
+server:
+  port: 8082
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    health:
+      circuitbreakers:
+        enabled: true
+    endpoints:
+      web:
+        exposure:
+          include: health
+    endpoint:
+      health:
+        show-details: always
+
+spring:
+  cloud:
+    discovery:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://${USERENTITY_DB_HOST}:${USERENTITY_DB_PORT}/${USERENTITY_DB_NAME}
+    username: ${USERENTITY_DB_USERNAME}
+    password: ${USERENTITY_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+jwt:
+  public-key: ${JWT_PUBLIC_KEY}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      departmentService:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThresdhold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+  ratelimiter:
+    instances:
+      departmentService:
+        limitForPeriod: 2
+        limitRefreshPeriod: 5s
+        timeoutDuration: 10s
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 100
+  timelimiter:
+    instances:
+      departmentService:
+        timeoutDuration: 2s
+        cancelRunningFuture: true
+  retry:
+    instances:
+      departmentService:
+        maxRetryAttempts: 5
+        waitDuration: 10s
+  bulkhead:
+    instances:
+      departmentService:
+        maxWaitDuration: 5s
+        maxConcurrentCalls: 5
