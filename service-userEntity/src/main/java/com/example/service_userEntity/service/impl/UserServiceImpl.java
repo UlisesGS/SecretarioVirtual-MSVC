@@ -3,7 +3,7 @@ package com.example.service_userEntity.service.impl;
 import com.example.service_userEntity.mappers.UserMapper;
 import com.example.service_userEntity.model.UserEntity;
 import com.example.service_userEntity.model.dtos.*;
-import com.example.service_userEntity.repositoy.UserRepository;
+import com.example.service_userEntity.repository.UserRepository;
 import com.example.service_userEntity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

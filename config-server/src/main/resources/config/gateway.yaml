@@ -23,6 +23,10 @@ spring:
           uri: lb://service-security
           predicates:
            - Path=/**
+        - id: service-employee
+          uri: lb://service-employee
+          predicates:
+           - Path=/**
         - id: service-dateEntity
           uri: lb://service-date
           predicates:
