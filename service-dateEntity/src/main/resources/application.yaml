@@ -1,5 +1,5 @@
 spring:
   application:
-    name: service-userEntity
+    name: service-dateEntity
   config:
     import: "optional:configserver:http://localhost:8088"
