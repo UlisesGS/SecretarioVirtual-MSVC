@@ -27,6 +27,10 @@ spring:
           uri: lb://service-employee
           predicates:
            - Path=/**
+        - id: service-dateEntity
+          uri: lb://service-date
+          predicates:
+            - Path=/**
         #- id: department-service
         # uri: lb://department-service
         # predicates:
