@@ -16,24 +16,40 @@ spring:
     gateway:
       routes:
         - id: service-userEntity
-          uri: lb://service-user
+          uri: lb://service-userEntity
           predicates:
-           - Path=/**
+            - Path=/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userServiceCircuitBreaker
+                fallbackUri: forward:/fallback/userentity
         - id: service-security
           uri: lb://service-security
           predicates:
-           - Path=/**
+           - Path=/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: securityServiceCircuitBreaker
+                fallbackUri: forward:/fallback/security
         - id: service-employee
           uri: lb://service-employee
           predicates:
-           - Path=/**
+           - Path=/employees/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: employeeServiceCircuitBreaker
+                fallbackUri: forward:/fallback/employee
         - id: service-dateEntity
           uri: lb://service-date
           predicates:
-            - Path=/**
-        #- id: department-service
-        # uri: lb://department-service
-        # predicates:
-      #   - Path=/api/v1/department/**
+            - Path=/dates/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: dateServiceCircuitBreaker
+                fallbackUri: forward:/fallback/dateentity
 jwt:
   public-key: ${JWT_PUBLIC_KEY}

@@ -18,10 +18,11 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/service-security/auth/login").permitAll()
-                        .pathMatchers("/service-dateentity/dates/create-date").permitAll()
-                        .pathMatchers("/service-userentity/users/register",
-                                "/service-userentity/users/credentials/*").permitAll()
+                        .pathMatchers("/auth/login").permitAll()
+                        .pathMatchers("/dates/create-date").permitAll()
+                        .pathMatchers("/employees/get-all").permitAll()
+                        .pathMatchers("/users/register",
+                                "/users/credentials/*").permitAll()
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
                         .anyExchange().authenticated()
                 )

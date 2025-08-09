@@ -16,7 +16,6 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeMapper employeeMapper;
-    private final EmployeeService employeeService;
     private final EmployeeRepository employeeRepository;
 
     @Override
