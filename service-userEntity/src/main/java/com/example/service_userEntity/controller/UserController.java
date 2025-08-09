@@ -17,14 +17,9 @@ public class UserController {
 
     private final UserService userService;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody @Valid RequestLoginDto loginRequest) {
-//        return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
-//    }
 
     @GetMapping("/credentials/{email}")
     public ResponseEntity<ResponseCredentialsDto> getCredentials(@PathVariable String email) {
-        System.out.println("entro 1");
         return new ResponseEntity<>(userService.getCredentials(email), HttpStatus.OK);
     }
 
