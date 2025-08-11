@@ -30,5 +30,9 @@ public class DateEntity {
     @Enumerated(EnumType.STRING)
     private DateState state;
 
-    private String emailEmployee;
+    private boolean fixed;
+
+    @ManyToOne
+    @JoinColumn(name = "daily_id")
+    private DailyAvailability dailyAvailability;
 }

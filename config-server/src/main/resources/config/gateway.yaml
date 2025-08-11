@@ -42,7 +42,6 @@ spring:
               args:
                 name: employeeServiceCircuitBreaker
                 fallbackUri: forward:/fallback/employee
-           - Path=/**
         - id: service-dateEntity
           uri: lb://service-date
           predicates:
