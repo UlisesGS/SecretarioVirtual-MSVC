@@ -16,21 +16,21 @@ spring:
     gateway:
       routes:
         - id: service-userEntity
-          uri: lb://service-user
+          uri: lb://service-userEntity
           predicates:
-           - Path=/**
+           - Path=/users/**
         - id: service-security
           uri: lb://service-security
           predicates:
-           - Path=/**
+           - Path=/auth/**
         - id: service-employee
           uri: lb://service-employee
           predicates:
-           - Path=/**
+           - Path=/employees/**
         - id: service-dateEntity
           uri: lb://service-date
           predicates:
-          - Path=/**
+          - Path=/dates/**
         #- id: department-service
         # uri: lb://department-service
         # predicates:
