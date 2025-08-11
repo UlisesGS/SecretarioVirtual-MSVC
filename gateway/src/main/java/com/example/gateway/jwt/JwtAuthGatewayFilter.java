@@ -22,13 +22,15 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getPath().toString();
-
+        System.out.println("Request Path: " + path);
         // Rutas públicas (no validar)
         if (path.startsWith("/auth/login") ||
-                path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
-                path.startsWith("/swagger") || path.startsWith("/v3/api-docs") ||
+                path.startsWith("/dates/create-date") ||
                 path.startsWith("/availabilitys/create") || path.startsWith("/availabilitys/list-all") ||
-                path.startsWith("/dates/create-date")){
+                path.startsWith("/employees/get-all") ||
+                path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
+                path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
+
             return chain.filter(exchange);
         }
 
