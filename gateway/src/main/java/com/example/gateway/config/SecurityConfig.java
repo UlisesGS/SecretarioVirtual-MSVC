@@ -28,6 +28,8 @@ public class SecurityConfig {
                                 "/users/credentials/*").permitAll()
                         .pathMatchers("/appointments/create",
                                 "/appointments/list-all").permitAll()
+                        .pathMatchers("/employees/create-provision",
+                                "/employees/list-all-provision").permitAll()
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
                         .anyExchange().authenticated()
                 )

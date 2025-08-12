@@ -1,47 +1,33 @@
 package com.example.service_employee.controller;
 
-import com.example.service_employee.model.dtos.*;
-import com.example.service_employee.service.EmployeeService;
+import com.example.service_employee.model.dtos.RequestCreateProvisionDto;
+import com.example.service_employee.model.dtos.ResponseProvisionDto;
 import com.example.service_employee.service.ProvisionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/provisions")
 @RequiredArgsConstructor
-public class EmployeeController {
-
-    private final EmployeeService employeeService;
+public class ProvisionController {
     private final ProvisionService provisionService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("/get-all")
-    public ResponseEntity<List<ResponseEmployeeDto>> findAll(){
-        return ResponseEntity.ok().body(employeeService.getAllEmployees());
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    @PostMapping("/register")
-    public ResponseEntity<ResponseRegisterEmployeeDto> create(@RequestBody @Valid RequestRegisterEmployeeDto user) {
-        return new ResponseEntity<>(employeeService.create(user), HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     @PostMapping("/create-provision")
     public ResponseEntity<ResponseProvisionDto>createProvision(@RequestBody @Valid
                                                                RequestCreateProvisionDto provisionDto){
         return new ResponseEntity<>(provisionService.createProvision(provisionDto), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/list-all-provision")
     public ResponseEntity<List<ResponseProvisionDto>>getAllProvisions(){
         return new ResponseEntity<>(provisionService.getAll(),HttpStatus.OK);
     }
+
+
 }

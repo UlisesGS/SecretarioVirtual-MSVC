@@ -1,9 +1,9 @@
 package com.example.service_employee.mappers;
 
 import com.example.service_employee.model.Employee;
-import com.example.service_employee.model.dtos.RequestRegisterDto;
+import com.example.service_employee.model.dtos.RequestRegisterEmployeeDto;
 import com.example.service_employee.model.dtos.ResponseEmployeeDto;
-import com.example.service_employee.model.dtos.ResponseRegisterDto;
+import com.example.service_employee.model.dtos.ResponseRegisterEmployeeDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,6 +13,6 @@ public interface EmployeeMapper {
 
     List<ResponseEmployeeDto> employeeListToResponseEmployeeDto(List<Employee> employeeList);
 
-    Employee registerDtoToEmployee(RequestRegisterDto requestRegisterDto);
-    ResponseRegisterDto employeeToResponseRegister(Employee userEntity);
+    Employee registerDtoToEmployee(RequestRegisterEmployeeDto requestRegisterDto);
+    ResponseRegisterEmployeeDto employeeToResponseRegister(Employee userEntity);
 }
