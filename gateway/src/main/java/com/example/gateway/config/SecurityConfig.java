@@ -26,7 +26,6 @@ public class SecurityConfig {
                         .pathMatchers("/employees/get-all").permitAll()
                         .pathMatchers("/users/register",
                                 "/users/credentials/*").permitAll()
-
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
                         .anyExchange().authenticated()
                 )
