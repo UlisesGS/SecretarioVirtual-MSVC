@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/availabilitys")
+@RequestMapping("/availity")
 @RequiredArgsConstructor
 public class DailyAvailabilityController {
     private final DailyAvailabiltyService dailyAvailabiltyService;

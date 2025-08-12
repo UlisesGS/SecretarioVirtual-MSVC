@@ -43,7 +43,7 @@ spring:
                 name: employeeServiceCircuitBreaker
                 fallbackUri: forward:/fallback/employee
         - id: service-dateEntity
-          uri: lb://service-date
+          uri: lb://service-dateEntity
           predicates:
             - Path=/dates/**
           filters:

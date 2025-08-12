@@ -22,7 +22,8 @@ public class DateServiceImpl implements DateService {
     @Override
     public ResponseDateDto createDate(RequestCreateDateDto createDateDto) {
         DateEntity dateEntity=dateMapper.requestCreateToDateEntity(createDateDto);
-        dateEntity.setDuration(1);
+        dateEntity.setDuration(createDateDto.duration());
+        dateEntity.setEndTime(dateEntity.getStartTime().plusMinutes(dateEntity.getDuration()));
         dateEntity.setState(DateState.LIBRE);
         dateEntity=dateRepository.save(dateEntity);
         return dateMapper.entityToDateDto(dateEntity);

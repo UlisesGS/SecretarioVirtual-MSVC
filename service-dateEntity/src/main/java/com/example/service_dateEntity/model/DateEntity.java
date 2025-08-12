@@ -33,6 +33,6 @@ public class DateEntity {
     private boolean fixed;
 
     @ManyToOne
-    @JoinColumn(name = "daily_id")
-    private DailyAvailability dailyAvailability;
+    @JoinColumn(name="daily_id")
+    private DailyAvailability dailyAvailabilityId;
 }

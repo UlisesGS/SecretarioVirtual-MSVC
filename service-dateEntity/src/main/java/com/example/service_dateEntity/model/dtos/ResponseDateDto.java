@@ -1,5 +1,6 @@
 package com.example.service_dateEntity.model.dtos;
 
+import com.example.service_dateEntity.model.enums.DateState;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
@@ -10,6 +11,8 @@ public record ResponseDateDto(
         Integer duration,
         LocalDateTime startTime,
         LocalDateTime endTime,
-        String emailEmployee
+        DateState state,
+        boolean fixed,
+        String dailyAvailabilityId
 ) {
 }

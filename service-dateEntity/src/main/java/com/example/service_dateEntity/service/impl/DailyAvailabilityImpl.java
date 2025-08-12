@@ -22,9 +22,13 @@ public class DailyAvailabilityImpl implements DailyAvailabiltyService {
     public ResponseDailyAvailabilityDto create(RequestCreateAvailabilityDto createAvailabilityDto) {
         DailyAvailability dailyAvailability=availabilityMapper
                 .requestCreateAvailabilityToDailyAvailability(createAvailabilityDto);
+        System.out.print("request mapeado: ");
+        System.out.println(dailyAvailability);
 
         dailyAvailability= availabilityRepository.save(dailyAvailability);
+        System.out.println("daily guardado: ");
         System.out.println(dailyAvailability);
+        System.out.println("daily response: ");
         System.out.println(availabilityMapper.dailyAvailabilityToDailyAvailabilityDto(dailyAvailability));
         return availabilityMapper.dailyAvailabilityToDailyAvailabilityDto(dailyAvailability);
     }
