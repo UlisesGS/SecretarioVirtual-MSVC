@@ -51,5 +51,14 @@ spring:
               args:
                 name: dateServiceCircuitBreaker
                 fallbackUri: forward:/fallback/dateentity
+        - id: service-appointment
+          uri: lb://service-appointment
+          predicates:
+            - Path=/appointments/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: dateServiceCircuitBreaker
+                fallbackUri: forward:/fallback/appointment
 jwt:
   public-key: ${JWT_PUBLIC_KEY}
