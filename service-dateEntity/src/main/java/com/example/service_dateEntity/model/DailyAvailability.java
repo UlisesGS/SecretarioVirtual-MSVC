@@ -26,7 +26,7 @@ public class DailyAvailability {
     @Enumerated(EnumType.STRING)
     private DaysOfTheWeek dayOfTheWeek;
 
-    @OneToMany(mappedBy = "dailyAvailability", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "dailyAvailabilityId")
     private List<DateEntity> dateList;
 
     @PrePersist
