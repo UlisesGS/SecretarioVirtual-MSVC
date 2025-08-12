@@ -36,7 +36,7 @@ Además, utiliza **Refresh Tokens** para mantener sesiones seguras y **certifica
 ## 👨‍💻 Equipo de Desarrollo
 Este proyecto está siendo desarrollado por un **equipo de 2 programadores** apasionados por crear software seguro, escalable y de alto rendimiento:
 - **[Daniel Iwach](https://github.com/Daniel-iwach)** — Backend.  
-- **[Ulises Gadea](https://github.com/UlisesGS)** – Backend.
+- **[Ulises Gadea](https://github.com/UlisesGS)** — Backend.
 
 ## 📅 Estado del Proyecto
 📌 **Fase:** Desarrollo Activo 🏗️  
