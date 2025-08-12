@@ -11,9 +11,14 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    //Register
     UserEntity registerDtoToUserEntity(RequestRegisterDto requestRegisterDto);
     ResponseRegisterDto userEntityToResponseRegister(UserEntity userEntity);
+
+    //auth
     ResponseCredentialsDto userEntityToResponseCredentialsDto(UserEntity userEntity);
+
+    //List
     ResponseUserDto userEntityToResponseUserDto(UserEntity userEntity);
     List<ResponseUserDto>userEntityListToResponseList(List<UserEntity>userEntityList);
 

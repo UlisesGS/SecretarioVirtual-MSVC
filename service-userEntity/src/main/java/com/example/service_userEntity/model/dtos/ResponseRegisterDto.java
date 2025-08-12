@@ -6,10 +6,11 @@ import java.time.LocalDate;
 
 public record ResponseRegisterDto(
         String id,
-        String username,
+        String name,
+        String surname,
         String email,
         LocalDate birthdate,
-        int dni,
+        Integer dni,
         Role role
 ) {
 }

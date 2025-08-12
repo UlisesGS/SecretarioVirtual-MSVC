@@ -1,5 +1,6 @@
 package com.example.service_userEntity.service.impl;
 
+import com.example.service_userEntity.exception.ResourceNotFoundException;
 import com.example.service_userEntity.mappers.UserMapper;
 import com.example.service_userEntity.model.UserEntity;
 import com.example.service_userEntity.model.dtos.*;
@@ -22,19 +23,6 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-//    @Override
-//    public ResponseLoginDto login(RequestLoginDto requestLoginDto) {
-//        UserEntity userEntity = userRepository.findByEmail(requestLoginDto.email())
-//                .orElseThrow(()-> new UsernameNotFoundException(
-//                        "Usuario con email: " + requestLoginDto.email() + " no encontrado"
-//                ));
-//        if (userEntity.getPassword().equals(requestLoginDto.password())){
-//            return new ResponseLoginDto(userEntity.getId(),"token");
-//        }else {
-//            throw new BadCredentialsException("Contraseña incorrecta");
-//        }
-//    }
-
     @Override
     public ResponseCredentialsDto getCredentials(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
@@ -48,20 +36,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseRegisterDto create(RequestRegisterDto user) {
-        UserEntity userEntity= userMapper.registerDtoToUserEntity(user);
+    public ResponseRegisterDto create(RequestRegisterDto requestRegisterDto) {
+        userRepository.findByEmail(requestRegisterDto.email()).orElseThrow(() ->
+                new ResourceNotFoundException("El usuario no fue encontrado."));
+
+        UserEntity userEntity= userMapper.registerDtoToUserEntity(requestRegisterDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        System.out.println(userEntity.getPassword());
-        userEntity=userRepository.save(userEntity);
-        ResponseRegisterDto responseRegisterDto =userMapper.userEntityToResponseRegister(userEntity);
-        return responseRegisterDto;
+        userRepository.save(userEntity);
+        return userMapper.userEntityToResponseRegister(userEntity);
     }
 
     @Override
     public List<ResponseUserDto> listAll() {
         List<UserEntity> userList = userRepository.findAll();
-        List<ResponseUserDto>responseList=userMapper.userEntityListToResponseList(userList);
-        return  responseList;
+
+        if (userList.isEmpty()){
+            throw new ResourceNotFoundException("No hay datos guardados");
+        }
+
+        return userMapper.userEntityListToResponseList(userList);
     }
 
     @Override

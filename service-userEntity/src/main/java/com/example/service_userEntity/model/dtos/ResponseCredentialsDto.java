@@ -8,7 +8,8 @@ import java.time.LocalDate;
 public record ResponseCredentialsDto(
         String id,
         String email,
-        String username,
+        String name,
+        String surname,
         Role role,
         String password
 ) {
