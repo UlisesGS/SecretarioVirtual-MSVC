@@ -4,7 +4,7 @@ import com.example.service_employee.model.enums.Role;
 
 import java.time.LocalDate;
 
-public record ResponseRegisterDto(
+public record ResponseRegisterEmployeeDto(
         String id,
         String name,
         String surname,

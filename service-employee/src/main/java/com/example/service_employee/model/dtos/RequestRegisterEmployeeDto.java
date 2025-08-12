@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-public record RequestRegisterDto(
+public record RequestRegisterEmployeeDto(
         @NotBlank(message = "El nombre es obligatorio.")
         @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "El nombre solo debe contener letras.")
         String name,
