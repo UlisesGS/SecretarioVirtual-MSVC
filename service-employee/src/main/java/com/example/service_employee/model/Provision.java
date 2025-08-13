@@ -14,7 +14,7 @@ public class Provision {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String employeeId;
+    private String emailEmployee;
     private String name;
     private Double price;
     private boolean state;
