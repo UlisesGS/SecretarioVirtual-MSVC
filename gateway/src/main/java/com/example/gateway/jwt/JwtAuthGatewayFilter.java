@@ -43,8 +43,9 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
         }
 
         String token = authHeader.substring(7);
-
+        System.out.println(token);
         if (!jwtProvider.isTokenValid(token)) {
+            System.out.println("entro");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -57,7 +58,8 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
                 .header("X-User-Email", email)
                 .header("X-User-Role", role)
                 .build();
-
+        System.out.println("final");
         return chain.filter(exchange.mutate().request(modifiedRequest).build());
     }
+
 }
