@@ -30,10 +30,10 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(String email) {
+    public String generateRefreshToken(Map<String, Object> claims, String email) {
         long refreshExpiration = jwtExpiration * 24;
         return Jwts.builder()
-                .setClaims(Map.of("type", "REFRESH"))
+                .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
@@ -43,6 +43,10 @@ public class JwtProvider {
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

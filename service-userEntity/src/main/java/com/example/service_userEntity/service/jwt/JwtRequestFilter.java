@@ -31,6 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = getTokenFromRequest(request);
+        System.out.println("llego al filtro de user");
+        System.out.println(token);
 
 
 
@@ -38,22 +40,40 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String email = jwtProvider.extractEmail(token);
             String role = jwtProvider.extractRole(token);
 
-            // Solo configuramos el contexto si el token es válido
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    email, null, List.of(new SimpleGrantedAuthority(role)));
+            System.out.println("email: "+email);
+            System.out.println("role: "+role);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Solo configuramos el contexto si el token es válido
+            if (role != null && !role.isBlank()) {
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        email, null, List.of(new SimpleGrantedAuthority(role))
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
+        // Primero buscar en el header Authorization
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
-        return null;
+
+        // Si no está, buscar en las cookies
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null; // No se encontró token
     }
 
 }

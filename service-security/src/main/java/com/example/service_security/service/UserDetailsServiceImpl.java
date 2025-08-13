@@ -44,26 +44,37 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserDetails userDetails = loadUserByUsername(request.email());
 
-        System.out.println("paso el load");
+
          //Verificar password con BCrypt
         if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
             throw new InvalidUserCredentialsException("Usuario o contraseña inválidos");
         }
 
-        System.out.println("paso el if");
+
         // Generar tokens JWT (Access + Refresh)
+//        String accessToken = jwtProvider.generateToken(
+//                Map.of("role", userDetails.getAuthorities(), "type", "ACCESS"), // agregamos el rol en claims
+//                userDetails.getUsername()
+//        );
+        String role = userDetails.getAuthorities().iterator().next().getAuthority();
+
         String accessToken = jwtProvider.generateToken(
-                Map.of("role", userDetails.getAuthorities(), "type", "ACCESS"), // agregamos el rol en claims
+                Map.of("role", role, "type", "ACCESS"),
                 userDetails.getUsername()
         );
-        System.out.println("paso el generatetoktn");
-        String refreshToken = jwtProvider.generateRefreshToken(userDetails.getUsername());
-        System.out.println("paso el generaterefresh");
+
+
+        String refreshToken = jwtProvider.generateRefreshToken(
+                Map.of("role", role,"type", "REFRESH"),
+                userDetails.getUsername()
+        );
+
         // Configurar cookie JWT
-        Cookie jwtCookie = new Cookie("token", refreshToken);
+        Cookie jwtCookie = new Cookie("token", accessToken);
         jwtCookie.setHttpOnly(true);
         jwtCookie.setSecure(false); // Cambiar a true en producción con HTTPS
         //jwtCookie.setPath("/auth/refresh");
+        jwtCookie.setPath("/");
         jwtCookie.setMaxAge(60 * 60); // 1 hora
 
         response.addCookie(jwtCookie);
@@ -135,9 +146,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // Extraer el email del usuario
         String email = jwtProvider.extractEmail(refreshToken);
+        //Extrae el role
+        String role = jwtProvider.extractRole(refreshToken);
+
 
         // Generar nuevo access token (NO generamos nuevo refresh token aquí, solo access)
-        String newAccessToken = jwtProvider.generateToken(Map.of(), email);
+        String newAccessToken = jwtProvider.generateToken(Map.of("role", role, "type", "ACCESS"), email);
 
         // Devolver el nuevo access token
         return new ResponseLoginDto(newAccessToken, refreshToken);
