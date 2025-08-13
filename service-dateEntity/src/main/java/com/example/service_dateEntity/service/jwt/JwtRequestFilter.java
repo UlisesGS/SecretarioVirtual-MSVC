@@ -1,11 +1,10 @@
-package com.example.service_userEntity.service.jwt;
+package com.example.service_dateEntity.service.jwt;
+
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,9 +30,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = getTokenFromRequest(request);
-
-
-
         if (token != null && jwtProvider.isTokenValid(token)) {
             String email = jwtProvider.extractEmail(token);
             String role = jwtProvider.extractRole(token);
@@ -55,6 +51,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
 }
-

@@ -25,6 +25,7 @@ public class SecurityConfig {
                                 "/dates/list-all").permitAll()
                         .pathMatchers("/employees/get-all").permitAll()
                         .pathMatchers("/users/register",
+                                "/users/get-all",
                                 "/users/credentials/*").permitAll()
                         .pathMatchers("/appointments/create",
                                 "/appointments/list-all").permitAll()

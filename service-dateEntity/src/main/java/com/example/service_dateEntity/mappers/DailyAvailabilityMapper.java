@@ -12,11 +12,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface DailyAvailabilityMapper {
-    @Mapping(source = "dayOfTheWeek", target = "dayOfTheWeek")
+
     DailyAvailability requestCreateAvailabilityToDailyAvailability(RequestCreateAvailabilityDto availabilityDto);
-    @Mapping(source = "dayOfTheWeek", target = "dayOfTheWeek")
+
     ResponseDailyAvailabilityDto dailyAvailabilityToDailyAvailabilityDto(DailyAvailability dailyAvailability);
-    @Mapping(source = "dayOfTheWeek", target = "dayOfTheWeek")
+
     List<ResponseDailyAvailabilityDto> dailyAvailabilityListToDailyAvailabilityDtoList
             (List<DailyAvailability> dailyAvailabilityList);
 }

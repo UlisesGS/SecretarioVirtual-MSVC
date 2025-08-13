@@ -1,8 +1,7 @@
-package com.example.gateway.jwt;
+package com.example.service_dateEntity.service.jwt;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
@@ -10,19 +9,20 @@ import java.security.PublicKey;
 @Service
 public class JwtProvider {
 
-    @Autowired
-    private PublicKey publicKey;
+    private final PublicKey publicKey;
 
-    // Solo validar y extraer info
+    public JwtProvider(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(publicKey)
                     .build()
-                    .parseClaimsJws(token); // Si no explota, la firma es válida
+                    .parseClaimsJws(token);
             return true;
         } catch (JwtException e) {
-            System.err.println("Token inválido: " + e.getMessage());
             return false;
         }
     }

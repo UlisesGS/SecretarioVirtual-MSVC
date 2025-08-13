@@ -1,5 +1,6 @@
 package com.example.service_userEntity.service.impl;
 
+import com.example.service_userEntity.exception.ResourceAlreadyExistsException;
 import com.example.service_userEntity.exception.ResourceNotFoundException;
 import com.example.service_userEntity.mappers.UserMapper;
 import com.example.service_userEntity.model.UserEntity;
@@ -25,8 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseCredentialsDto getCredentials(String email) {
+        System.out.println(email);
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(()-> new NoSuchElementException(
+                .orElseThrow(()-> new ResourceNotFoundException(
                         "Usuario con email: " + email + " no encontrado"
                 ));
         System.out.println(userEntity);
@@ -37,8 +39,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseRegisterDto create(RequestRegisterDto requestRegisterDto) {
-        userRepository.findByEmail(requestRegisterDto.email()).orElseThrow(() ->
-                new ResourceNotFoundException("El usuario no fue encontrado."));
+
+        if (userRepository.findByEmail(requestRegisterDto.email()).isPresent()){
+            throw new ResourceAlreadyExistsException("Ya hay una cuenta asociada con el email " + requestRegisterDto.email() + ".");
+        }
 
         UserEntity userEntity= userMapper.registerDtoToUserEntity(requestRegisterDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));

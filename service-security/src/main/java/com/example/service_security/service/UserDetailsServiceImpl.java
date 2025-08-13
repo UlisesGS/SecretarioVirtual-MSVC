@@ -63,7 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Cookie jwtCookie = new Cookie("token", refreshToken);
         jwtCookie.setHttpOnly(true);
         jwtCookie.setSecure(false); // Cambiar a true en producción con HTTPS
-        jwtCookie.setPath("/service-security/auth/refresh");
+        //jwtCookie.setPath("/auth/refresh");
         jwtCookie.setMaxAge(60 * 60); // 1 hora
 
         response.addCookie(jwtCookie);
