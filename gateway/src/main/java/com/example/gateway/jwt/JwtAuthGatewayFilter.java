@@ -37,25 +37,25 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
             return chain.filter(exchange);
         }
 
-//        String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-//            return exchange.getResponse().setComplete();
-//        }
-//        String token = authHeader.substring(7);
-
-        String token = null;
-        HttpCookie cookie = request.getCookies().getFirst("token");
-        System.out.println(cookie);
-        if (cookie != null) {
-            token = cookie.getValue();
-            System.out.println(token);
-        }
-
-        if (token == null) {
+        String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
+        String token = authHeader.substring(7);
+
+//        String token = null;
+//        HttpCookie cookie = request.getCookies().getFirst("token");
+//        System.out.println(cookie);
+//        if (cookie != null) {
+//            token = cookie.getValue();
+//            System.out.println(token);
+//        }
+//
+//        if (token == null) {
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+//        }
 
         System.out.println(token);
         if (!jwtProvider.isTokenValid(token)) {
