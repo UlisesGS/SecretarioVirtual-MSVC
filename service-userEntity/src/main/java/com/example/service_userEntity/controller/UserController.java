@@ -28,7 +28,7 @@ public class UserController {
         return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/get-all")
     public ResponseEntity<List<ResponseUserDto>> getAll() {
         return new ResponseEntity<>(userService.listAll(), HttpStatus.OK);
