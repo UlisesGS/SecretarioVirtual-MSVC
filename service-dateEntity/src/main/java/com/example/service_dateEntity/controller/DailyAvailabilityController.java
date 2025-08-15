@@ -2,10 +2,13 @@ package com.example.service_dateEntity.controller;
 
 
 import com.example.service_dateEntity.model.dtos.RequestCreateAvailabilityDto;
+import com.example.service_dateEntity.model.dtos.RequestFindAllDatesByEmployeeAndDay;
 import com.example.service_dateEntity.model.dtos.ResponseDailyAvailabilityDto;
+import com.example.service_dateEntity.model.dtos.ResponseDateDto;
 import com.example.service_dateEntity.service.DailyAvailabiltyService;
 import com.example.service_dateEntity.utils.AllowedForEmployeesAndAdmins;
 import com.example.service_dateEntity.utils.AllowedForUsersAndEmployeesAndAdmins;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +25,7 @@ public class DailyAvailabilityController {
 
     @AllowedForEmployeesAndAdmins
     @PostMapping("/create")
-    public ResponseEntity<ResponseDailyAvailabilityDto>create(@RequestBody RequestCreateAvailabilityDto availabilityDto){
+    public ResponseEntity<ResponseDailyAvailabilityDto>create(@RequestBody @Valid RequestCreateAvailabilityDto availabilityDto){
         return new ResponseEntity<>(dailyAvailabiltyService.create(availabilityDto), HttpStatus.OK);
     }
 
@@ -30,5 +33,12 @@ public class DailyAvailabilityController {
     @GetMapping("/list-all")
     public ResponseEntity<List<ResponseDailyAvailabilityDto>>getAll(){
         return new ResponseEntity<>(dailyAvailabiltyService.getAll(),HttpStatus.OK);
+    }
+
+    @AllowedForUsersAndEmployeesAndAdmins
+    @GetMapping("/list-dates")
+    public ResponseEntity<List<ResponseDateDto>>findAllByDayAndEmployee
+            (@RequestBody @Valid RequestFindAllDatesByEmployeeAndDay request){
+        return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployee(request),HttpStatus.OK);
     }
 }
