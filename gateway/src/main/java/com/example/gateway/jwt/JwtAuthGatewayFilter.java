@@ -27,7 +27,7 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
         // Rutas públicas (no validar)
         if (path.startsWith("/auth/login") ||
                 path.startsWith("/dates/create-date") ||  path.startsWith("/dates/list-all") ||
-                path.startsWith("/availability/create") || path.startsWith("/availability/list-all") ||
+                path.startsWith("/availability/create") || path.startsWith("/availability/list-all") || path.startsWith("/availability/list-dates") ||
                 path.startsWith("/employees/get-all") ||
                 path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
                 path.startsWith("/appointments/create") || path.startsWith("/appointments/list-all") ||
