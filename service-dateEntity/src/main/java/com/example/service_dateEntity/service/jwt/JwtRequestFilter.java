@@ -29,10 +29,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("llego a la seguridad de date");
         String token = getTokenFromRequest(request);
+        System.out.println(token);
         if (token != null && jwtProvider.isTokenValid(token)) {
             String email = jwtProvider.extractEmail(token);
             String role = jwtProvider.extractRole(token);
+
+            System.out.println(email);
+            System.out.println(role);
 
             // Solo configuramos el contexto si el token es válido
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
