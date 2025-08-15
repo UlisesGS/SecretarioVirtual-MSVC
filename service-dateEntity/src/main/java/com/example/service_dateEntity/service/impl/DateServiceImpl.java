@@ -34,4 +34,9 @@ public class DateServiceImpl implements DateService {
         List<DateEntity> dateEntityList=dateRepository.findAll();
         return dateMapper.listEntityToListDto(dateEntityList);
     }
+
+    @Override
+    public List<ResponseDateDto> findByDailyAvailabilityId(String dailyId) {
+        return dateMapper.listEntityToListDto(dateRepository.findByDailyAvailabilityId_Id(dailyId));
+    }
 }

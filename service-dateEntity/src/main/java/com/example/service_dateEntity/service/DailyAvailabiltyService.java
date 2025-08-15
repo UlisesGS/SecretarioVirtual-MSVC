@@ -17,4 +17,5 @@ public interface DailyAvailabiltyService {
     ResponseDailyAvailabilityDto create(RequestCreateAvailabilityDto createAvailabilityDto);
     List<ResponseDailyAvailabilityDto>getAll();
     List<ResponseDateDto> findAllByDayAndEmployee(RequestFindAllDatesByEmployeeAndDay request);
+    List<ResponseDateDto> createDatesByDaily(String dailyId);
 }
