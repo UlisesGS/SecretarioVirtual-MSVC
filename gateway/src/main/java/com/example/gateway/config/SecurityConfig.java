@@ -20,7 +20,8 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/login").permitAll()
                         .pathMatchers("/dates/create",
-                                "/dates/list-all").permitAll()
+                                "/dates/list-all",
+                                "/dates/list-by-daily-id/*").permitAll()
                         .pathMatchers("/availability/create",
                                 "/availability/list-all",
                                 "/availability/list-dates").permitAll()

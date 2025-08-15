@@ -28,7 +28,7 @@ public class DailyAvailability {
 
     private Integer duration;
 
-    private List<Integer> range;
+    private List<Double> range;
 
     private Integer rest;
 

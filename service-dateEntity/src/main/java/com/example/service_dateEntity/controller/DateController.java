@@ -34,4 +34,10 @@ public class DateController {
         return new ResponseEntity<>(dateService.getAll(),HttpStatus.OK);
     }
 
+    @AllowedForUsersAndEmployeesAndAdmins
+    @GetMapping("/list-by-daily-id/{dailyId}")
+    public ResponseEntity<List<ResponseDateDto>>findByDailyAvailabilityId(@PathVariable String dailyId){
+        return new ResponseEntity<>(dateService.findByDailyAvailabilityId(dailyId),HttpStatus.OK);
+    }
+
 }
