@@ -19,10 +19,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/login").permitAll()
-                        .pathMatchers("/dates/create-date",
-                                "/dates/list-all").permitAll()
                         .pathMatchers("/dates/create",
                                 "/dates/list-all").permitAll()
+                        .pathMatchers("/availability/create",
+                                "/availability/list-all").permitAll()
                         .pathMatchers("/employees/get-all").permitAll()
                         .pathMatchers("/users/register",
                                 "/users/get-all",

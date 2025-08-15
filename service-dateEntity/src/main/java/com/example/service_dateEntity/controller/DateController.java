@@ -23,7 +23,7 @@ public class DateController {
     private final DailyAvailabiltyService dailyAvailabiltyService;
 
     @AllowedForEmployeesAndAdmins
-    @PostMapping("/create-date")
+    @PostMapping("/create")
     public ResponseEntity<ResponseDateDto>createDate(@RequestBody @Valid RequestCreateDateDto createDateDto){
         return new ResponseEntity<>(dateService.createDate(createDateDto), HttpStatus.OK);
     }

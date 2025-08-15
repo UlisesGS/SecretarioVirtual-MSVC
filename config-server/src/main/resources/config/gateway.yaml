@@ -45,7 +45,7 @@ spring:
         - id: service-dateEntity
           uri: lb://service-dateEntity
           predicates:
-            - Path=/dates/**, /availity/**
+            - Path=/dates/**, /availability/**
           filters:
             - name: CircuitBreaker
               args:
