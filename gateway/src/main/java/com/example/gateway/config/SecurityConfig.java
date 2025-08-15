@@ -19,18 +19,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/login").permitAll()
-                        .pathMatchers("/dates/create-date",
-                                "/dates/list-all").permitAll()
                         .pathMatchers("/dates/create",
-                                "/dates/list-all").permitAll()
-                        .pathMatchers("/employees/register").permitAll()
+                                "/dates/list-all",
+                                "/dates/list-by-daily-id/*").permitAll()
+                        .pathMatchers("/availability/create",
+                                "/availability/list-all",
+                                "/availability/list-dates").permitAll()
                         .pathMatchers("/users/register",
                                 "/users/get-all",
                                 "/users/credentials/*").permitAll()
                         .pathMatchers("/appointments/create",
                                 "/appointments/list-all").permitAll()
-                        .pathMatchers("/employees/create-provision",
-                                "/employees/list-all-provision").permitAll()
+                        .pathMatchers("/employees/register").permitAll()
+                        .pathMatchers("/provisions/create-provision",
+                                "/provisions/list-all-provision").permitAll()
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
                         .anyExchange().authenticated()
                 )

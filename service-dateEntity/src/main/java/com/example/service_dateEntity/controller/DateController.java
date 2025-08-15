@@ -23,7 +23,7 @@ public class DateController {
     private final DailyAvailabiltyService dailyAvailabiltyService;
 
     @AllowedForEmployeesAndAdmins
-    @PostMapping("/create-date")
+    @PostMapping("/create")
     public ResponseEntity<ResponseDateDto>createDate(@RequestBody @Valid RequestCreateDateDto createDateDto){
         return new ResponseEntity<>(dateService.createDate(createDateDto), HttpStatus.OK);
     }
@@ -32,6 +32,12 @@ public class DateController {
     @GetMapping("/list-all")
     public ResponseEntity<List<ResponseDateDto>>listAll(){
         return new ResponseEntity<>(dateService.getAll(),HttpStatus.OK);
+    }
+
+    @AllowedForUsersAndEmployeesAndAdmins
+    @GetMapping("/list-by-daily-id/{dailyId}")
+    public ResponseEntity<List<ResponseDateDto>>findByDailyAvailabilityId(@PathVariable String dailyId){
+        return new ResponseEntity<>(dateService.findByDailyAvailabilityId(dailyId),HttpStatus.OK);
     }
 
 }

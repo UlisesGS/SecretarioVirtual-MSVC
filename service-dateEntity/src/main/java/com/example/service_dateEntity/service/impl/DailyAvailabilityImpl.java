@@ -2,33 +2,40 @@ package com.example.service_dateEntity.service.impl;
 
 
 import com.example.service_dateEntity.mappers.DailyAvailabilityMapper;
+import com.example.service_dateEntity.mappers.DateMapper;
 import com.example.service_dateEntity.model.DailyAvailability;
-import com.example.service_dateEntity.model.dtos.RequestCreateAvailabilityDto;
-import com.example.service_dateEntity.model.dtos.ResponseDailyAvailabilityDto;
+import com.example.service_dateEntity.model.DateEntity;
+import com.example.service_dateEntity.model.dtos.*;
+import com.example.service_dateEntity.model.enums.DaysOfTheWeek;
 import com.example.service_dateEntity.repository.DailyAvailabilityRepository;
 import com.example.service_dateEntity.service.DailyAvailabiltyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.service_dateEntity.model.enums.DaysOfTheWeek.*;
 
 @Service
 @RequiredArgsConstructor
 public class DailyAvailabilityImpl implements DailyAvailabiltyService {
     private final DailyAvailabilityRepository availabilityRepository;
     private final DailyAvailabilityMapper availabilityMapper;
+    private final DateMapper dateMapper;
 
     @Override
     public ResponseDailyAvailabilityDto create(RequestCreateAvailabilityDto createAvailabilityDto) {
         DailyAvailability dailyAvailability=availabilityMapper
                 .requestCreateAvailabilityToDailyAvailability(createAvailabilityDto);
-        System.out.print("request mapeado: ");
         System.out.println(dailyAvailability);
 
         dailyAvailability= availabilityRepository.save(dailyAvailability);
-        System.out.println("daily guardado: ");
         System.out.println(dailyAvailability);
-        System.out.println("daily response: ");
         System.out.println(availabilityMapper.dailyAvailabilityToDailyAvailabilityDto(dailyAvailability));
         return availabilityMapper.dailyAvailabilityToDailyAvailabilityDto(dailyAvailability);
     }
@@ -37,5 +44,83 @@ public class DailyAvailabilityImpl implements DailyAvailabiltyService {
     public List<ResponseDailyAvailabilityDto> getAll() {
         List<DailyAvailability>dailyAvailabilities=availabilityRepository.findAll();
         return availabilityMapper.dailyAvailabilityListToDailyAvailabilityDtoList(dailyAvailabilities);
+    }
+
+    @Override
+    public List<ResponseDateDto> findAllByDayAndEmployee(RequestFindAllDatesByEmployeeAndDay request) {
+        List<DateEntity>dateEntityList=availabilityRepository.
+                findAllByDayAndEmployee(request.dayOfTheWeek(),request.employeeId());
+        return dateMapper.listEntityToListDto(dateEntityList);
+    }
+
+    @Override
+    public List<ResponseDateDto> createDatesByDaily(String dailyId) {
+        DailyAvailability dailyAvailability=availabilityRepository.findById(dailyId)
+                .orElseThrow(()->new RuntimeException("daily no encontrado"));
+        List<Double>rangeList=dailyAvailability.getRange();
+
+        for (int i = 0; i <rangeList.size() ; i++) {
+            LocalTime startTime=toLOcalTime(rangeList.get(i*2));
+            LocalTime endTime=toLOcalTime(rangeList.get((i*2)+1));
+
+            createDates(startTime,endTime, dailyAvailability.getDuration(),dailyId, dailyAvailability.getDayOfTheWeek(), dailyAvailability.getRest());
+        }
+        return new ArrayList<>();//que retorne todos los dates o lo que quieras
+    }
+
+    private LocalTime toLOcalTime(Double aDouble){
+        int wholePart= aDouble.intValue();
+        int decimal = (int) ((aDouble - wholePart) * 100);
+        return LocalTime.of(wholePart,decimal);
+    }
+
+    private int createDates(LocalTime startTime, LocalTime endTime, Integer duration, String dailyId, DaysOfTheWeek daysOfTheWeek, Integer rest){
+        LocalTime counter=startTime;
+        Integer daysCreated=0;
+        List<LocalDate>listOfDays=getAllDatesForDayInMonth(2025,8,toDayOfWeek(daysOfTheWeek));
+        for (LocalDate day:listOfDays){ //recorre todos los dias
+
+            while (counter.plusMinutes(duration).isBefore(endTime)){
+                LocalDateTime toCreate=day.atTime(startTime);
+                new RequestCreateDateDto(duration,toCreate,dailyId,false);
+                counter=counter.plusMinutes(duration+rest);
+                //llama al service de date y crea un turno pasandole el request
+                daysCreated++;
+            }
+        }
+        return daysCreated;
+    }
+
+    private List<LocalDate> getAllDatesForDayInMonth(int year, int month, DayOfWeek targetDay) {
+        List<LocalDate> dates = new ArrayList<>();
+
+        // Empezamos en el primer día del mes
+        LocalDate date = LocalDate.of(year, month, 1);
+
+        // Movemos la fecha hasta el primer día que coincida con targetDay
+        while (date.getDayOfWeek() != targetDay) {
+            date = date.plusDays(1);
+        }
+
+        // Recorremos el mes sumando de 7 en 7 días
+        while (date.getMonthValue() == month) {
+            dates.add(date);
+            date = date.plusWeeks(1);
+        }
+
+        return dates;
+    }
+
+    public DayOfWeek toDayOfWeek(DaysOfTheWeek day) {
+        switch (day) {
+            case LUNES:      return DayOfWeek.MONDAY;
+            case MARTES:     return DayOfWeek.TUESDAY;
+            case MIERCOLES:  return DayOfWeek.WEDNESDAY;
+            case JUEVES:     return DayOfWeek.THURSDAY;
+            case VIERNES:    return DayOfWeek.FRIDAY;
+            case SABADO:     return DayOfWeek.SATURDAY;
+            case DOMINGO:    return DayOfWeek.SUNDAY;
+            default: throw new IllegalArgumentException("Día no válido: " + day);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.service_dateEntity.service;
 
+import com.example.service_dateEntity.model.DateEntity;
 import com.example.service_dateEntity.model.dtos.RequestCreateDateDto;
 import com.example.service_dateEntity.model.dtos.ResponseDateDto;
 import org.springframework.stereotype.Service;
@@ -12,4 +13,8 @@ public interface DateService {
     ResponseDateDto createDate(RequestCreateDateDto createDateDto);
 
     List<ResponseDateDto> getAll();
+
+    List<ResponseDateDto> findByDailyAvailabilityId(String dailyId);
+
+
 }

@@ -26,6 +26,12 @@ public class DailyAvailability {
     @Enumerated(EnumType.STRING)
     private DaysOfTheWeek dayOfTheWeek;
 
+    private Integer duration;
+
+    private List<Double> range;
+
+    private Integer rest;
+
     @OneToMany(mappedBy = "dailyAvailabilityId")
     private List<DateEntity> dateList;
 
