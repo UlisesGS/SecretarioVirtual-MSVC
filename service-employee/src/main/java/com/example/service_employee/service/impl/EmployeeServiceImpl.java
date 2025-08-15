@@ -5,6 +5,7 @@ import com.example.service_employee.exceptions.ResourceNotFoundException;
 import com.example.service_employee.mappers.EmployeeMapper;
 import com.example.service_employee.model.Employee;
 import com.example.service_employee.model.dtos.RequestRegisterEmployeeDto;
+import com.example.service_employee.model.dtos.ResponseCredentialsDto;
 import com.example.service_employee.model.dtos.ResponseEmployeeDto;
 import com.example.service_employee.model.dtos.ResponseRegisterEmployeeDto;
 import com.example.service_employee.repository.EmployeeRepository;
@@ -24,6 +25,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    public ResponseCredentialsDto getCredentials(String email) {
+        System.out.println(email);
+        Employee userEntity = employeeRepository.findByEmail(email)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Empleado con email: " + email + " no encontrado"
+                ));
+        System.out.println(userEntity);
+        ResponseCredentialsDto credentialsDto=employeeMapper.employeeToResponseCredentialsDto(userEntity);
+        System.out.println(credentialsDto);
+        return credentialsDto;
+    }
+
+    @Override
     public List<ResponseEmployeeDto> getAllEmployees() {
         List<Employee> employeeList = employeeRepository.findAll();
 
@@ -36,9 +50,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public ResponseRegisterEmployeeDto create(RequestRegisterEmployeeDto requestRegisterDto) {
-        employeeRepository.findByEmail(requestRegisterDto.email()).orElseThrow(() ->
-                new ResourceNotFoundException("El usuario no fue encontrado."));
-
         if (employeeRepository.findByEmail(requestRegisterDto.email()).isPresent()) {
             throw new ResourceAlreadyExistsException("Ya hay una cuenta asociada con el email " + requestRegisterDto.email() + ".");
         }
