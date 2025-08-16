@@ -2,15 +2,15 @@ package com.example.service_security.service;
 
 import com.example.service_security.dto.RequestLoginDto;
 import com.example.service_security.dto.ResponseLoginDto;
-import com.example.service_security.dto.ResponseUserEntityDto;
+import com.example.service_security.dto.ResponseCredentialsDto;
 import com.example.service_security.exception.InvalidUserCredentialsException;
+import com.example.service_security.feign.EmployeeClient;
 import com.example.service_security.feign.UserEntityClient;
 import com.example.service_security.jwt.JwtProvider;
-import com.example.service_security.model.Role;
+import feign.FeignException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserEntityClient userClient; // tu FeignClient que consulta al microservicio user-entity
 
     @Autowired
+    private EmployeeClient employeeClient; // tu FeignClient que consulta al microservicio user-entity
+
+    @Autowired
     private JwtProvider jwtProvider;
 
     @Autowired
@@ -42,20 +45,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public ResponseLoginDto login(RequestLoginDto request, HttpServletResponse response) {
 
-        UserDetails userDetails = loadUserByUsername(request.email());
+        String emailConTipo = request.email();
+        System.out.println();
+        if (request.type().equals("EMPLOYEE")){
+            emailConTipo += "E";
+        }else if(request.type().equals("USER")){
+            emailConTipo += "U";
+        }else{
+            throw new InvalidUserCredentialsException("Tipo de usuario inválido.");
+        }
+        System.out.println(emailConTipo);
+        UserDetails userDetails = loadUserByUsername(emailConTipo);
 
-
+        System.out.println("caca");
          //Verificar password con BCrypt
         if (!passwordEncoder.matches(request.password(), userDetails.getPassword())) {
             throw new InvalidUserCredentialsException("Usuario o contraseña inválidos");
         }
 
 
-        // Generar tokens JWT (Access + Refresh)
-//        String accessToken = jwtProvider.generateToken(
-//                Map.of("role", userDetails.getAuthorities(), "type", "ACCESS"), // agregamos el rol en claims
-//                userDetails.getUsername()
-//        );
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
 
         String accessToken = jwtProvider.generateToken(
@@ -89,11 +97,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("entro");
-        ResponseUserEntityDto user = userClient.getByEmail(email); // creamos este endpoint en user-entity
-        System.out.println(user.getEmail());
+        char tipo = email.charAt(email.length()-1);
+        String realEmail = email.substring(0, email.length()-1);
+        System.out.println(tipo);
+        System.out.println(realEmail);
+        ResponseCredentialsDto user = new ResponseCredentialsDto();
+
+        try {
+            if (tipo == 'E') {
+                System.out.println("chau");
+                user = employeeClient.getByEmail(realEmail);
+            } else if (tipo == 'U') {
+                user = userClient.getByEmail(realEmail);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("chauuuuuuuuu");
+
         if (user == null) {
             throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
         }

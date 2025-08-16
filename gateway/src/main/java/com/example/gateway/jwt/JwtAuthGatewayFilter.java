@@ -26,13 +26,19 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
         System.out.println("Request Path: " + path);
         // Rutas públicas (no validar)
         if (path.startsWith("/auth/login") ||
-                path.startsWith("/dates/create-date") ||  path.startsWith("/dates/list-all") ||
+
+                path.startsWith("/dates/create") || path.startsWith("/dates/list-all") ||
+
+                path.startsWith("/employees/register") || path.startsWith("/employee/credentials/") ||
+
                 path.startsWith("/availability/create") || path.startsWith("/availability/list-all") ||
-//                path.startsWith("/availability/list-dates") ||
-                path.startsWith("/employees/get-all") ||
+
                 path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
+
                 path.startsWith("/appointments/create") || path.startsWith("/appointments/list-all") ||
-                path.startsWith("/employees/create-provision") || path.startsWith("/employees/list-all-provision") ||
+
+                path.startsWith("/provisions/create-provision") || path.startsWith("/provisions/list-all-provision") ||
+
                 path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
 
             return chain.filter(exchange);

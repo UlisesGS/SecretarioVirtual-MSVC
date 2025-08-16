@@ -22,13 +22,18 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final ProvisionService provisionService;
 
+    @GetMapping("/credentials/{email}")
+    public ResponseEntity<ResponseCredentialsDto> getCredentials(@PathVariable String email) {
+        System.out.println("hola");
+        return new ResponseEntity<>(employeeService.getCredentials(email), HttpStatus.OK);
+    }
+
     @AllowedForUsersAndEmployeesAndAdmins
     @GetMapping("/get-all")
     public ResponseEntity<List<ResponseEmployeeDto>> findAll(){
         return ResponseEntity.ok().body(employeeService.getAllEmployees());
     }
 
-    @AllowedForEmployeesAndAdmins
     @PostMapping("/register")
     public ResponseEntity<ResponseRegisterEmployeeDto> create(@RequestBody @Valid RequestRegisterEmployeeDto user) {
         return new ResponseEntity<>(employeeService.create(user), HttpStatus.OK);

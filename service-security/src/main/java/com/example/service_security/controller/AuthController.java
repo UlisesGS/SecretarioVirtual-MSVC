@@ -6,6 +6,7 @@ import com.example.service_security.dto.ResponseLoginDto;
 import com.example.service_security.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AuthController {
     private UserDetailsServiceImpl authService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseLoginDto> login(@RequestBody RequestLoginDto request, HttpServletResponse response) {
+    public ResponseEntity<ResponseLoginDto> login(@RequestBody @Valid RequestLoginDto request, HttpServletResponse response) {
         return new ResponseEntity<>(authService.login(request, response), HttpStatus.OK);
     }
 

@@ -14,7 +14,8 @@ public class Validations {
 
         public boolean getAuthenticatedUser(String email){
             String employeeEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-
+            System.out.println("1. "+email);
+            System.out.println("1. "+employeeEmail);
             employeeRepository.findByEmail(employeeEmail)
                     .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
