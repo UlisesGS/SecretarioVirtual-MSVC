@@ -1,6 +1,7 @@
 package com.example.service_dateEntity.controller;
 
 import com.example.service_dateEntity.model.dtos.RequestCreateDateDto;
+import com.example.service_dateEntity.model.dtos.RequestFindByDailyIdAndDate;
 import com.example.service_dateEntity.model.dtos.ResponseDateDto;
 import com.example.service_dateEntity.service.DailyAvailabiltyService;
 import com.example.service_dateEntity.service.DateService;
@@ -38,6 +39,12 @@ public class DateController {
     @GetMapping("/list-by-daily-id/{dailyId}")
     public ResponseEntity<List<ResponseDateDto>>findByDailyAvailabilityId(@PathVariable String dailyId){
         return new ResponseEntity<>(dateService.findByDailyAvailabilityId(dailyId),HttpStatus.OK);
+    }
+
+    @AllowedForUsersAndEmployeesAndAdmins
+    @GetMapping("/find-by-daily-and-date")
+    public ResponseEntity<List<ResponseDateDto>>findByDailyIdAndDate(@RequestBody @Valid RequestFindByDailyIdAndDate request){
+        return new ResponseEntity<>(dateService.findByDailyIdAndDate(request),HttpStatus.OK);
     }
 
 }
