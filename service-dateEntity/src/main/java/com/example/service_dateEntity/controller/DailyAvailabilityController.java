@@ -1,10 +1,7 @@
 package com.example.service_dateEntity.controller;
 
 
-import com.example.service_dateEntity.model.dtos.RequestCreateAvailabilityDto;
-import com.example.service_dateEntity.model.dtos.RequestFindAllDatesByEmployeeAndDay;
-import com.example.service_dateEntity.model.dtos.ResponseDailyAvailabilityDto;
-import com.example.service_dateEntity.model.dtos.ResponseDateDto;
+import com.example.service_dateEntity.model.dtos.*;
 import com.example.service_dateEntity.service.DailyAvailabiltyService;
 import com.example.service_dateEntity.utils.AllowedForEmployeesAndAdmins;
 import com.example.service_dateEntity.utils.AllowedForUsersAndEmployeesAndAdmins;
@@ -40,5 +37,12 @@ public class DailyAvailabilityController {
     public ResponseEntity<List<ResponseDateDto>>findAllByDayAndEmployee
             (@RequestBody @Valid RequestFindAllDatesByEmployeeAndDay request){
         return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployee(request),HttpStatus.OK);
+    }
+
+    @AllowedForUsersAndEmployeesAndAdmins
+    @GetMapping("/list-dates-by-day")
+    public ResponseEntity<List<ResponseDateDto>> findAllByDayAndEmployeeAndDate(@RequestBody
+                                                                                @Valid RequestFindAllByDayAndEmployeeAndDate request){
+        return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployeeAndDate(request),HttpStatus.OK);
     }
 }

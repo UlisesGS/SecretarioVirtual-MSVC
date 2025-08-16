@@ -24,6 +24,7 @@ public class SecurityConfig {
                                 "/dates/list-by-daily-id/*").permitAll()
                         .pathMatchers("/availability/create",
                                 "/availability/list-all",
+                                "/availability/list-dates-by-day",
                                 "/availability/list-dates").permitAll()
                         .pathMatchers("/users/register",
                                 "/users/get-all",

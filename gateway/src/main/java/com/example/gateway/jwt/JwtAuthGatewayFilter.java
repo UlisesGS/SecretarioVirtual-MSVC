@@ -32,6 +32,7 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
                 path.startsWith("/employees/register") || path.startsWith("/employee/credentials/") ||
 
                 path.startsWith("/availability/create") || path.startsWith("/availability/list-all") ||
+                path.startsWith("/availability/list-dates-by-day") ||
 
                 path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
 
