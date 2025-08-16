@@ -23,9 +23,9 @@ public class DateController {
     private final DailyAvailabiltyService dailyAvailabiltyService;
 
     @AllowedForEmployeesAndAdmins
-    @PostMapping("/create")
-    public ResponseEntity<ResponseDateDto>createDate(@RequestBody @Valid RequestCreateDateDto createDateDto){
-        return new ResponseEntity<>(dateService.createDate(createDateDto), HttpStatus.OK);
+    @PostMapping("/create/{id}")
+    public ResponseEntity<List<ResponseDateDto> >createDate(@PathVariable String id){
+        return new ResponseEntity<>(dailyAvailabiltyService.createDatesByDaily(id), HttpStatus.OK);
     }
 
     @AllowedForUsersAndEmployeesAndAdmins

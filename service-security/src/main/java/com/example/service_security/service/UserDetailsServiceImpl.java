@@ -2,17 +2,15 @@ package com.example.service_security.service;
 
 import com.example.service_security.dto.RequestLoginDto;
 import com.example.service_security.dto.ResponseLoginDto;
-import com.example.service_security.dto.ResponseUserEntityDto;
+import com.example.service_security.dto.ResponseCredentialsDto;
 import com.example.service_security.exception.InvalidUserCredentialsException;
 import com.example.service_security.feign.EmployeeClient;
 import com.example.service_security.feign.UserEntityClient;
 import com.example.service_security.jwt.JwtProvider;
-import com.example.service_security.model.Role;
 import feign.FeignException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -106,7 +104,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String realEmail = email.substring(0, email.length()-1);
         System.out.println(tipo);
         System.out.println(realEmail);
-        ResponseUserEntityDto user = new ResponseUserEntityDto();
+        ResponseCredentialsDto user = new ResponseCredentialsDto();
 
         try {
             if (tipo == 'E') {
@@ -115,12 +113,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             } else if (tipo == 'U') {
                 user = userClient.getByEmail(realEmail);
             }
-        } catch (FeignException.NotFound e) {
-            throw new UsernameNotFoundException("Usuario no encontrado con email: " + realEmail);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new InvalidUserCredentialsException("Error al obtener el usuario");
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
+
+        System.out.println("chauuuuuuuuu");
 
         if (user == null) {
             throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);

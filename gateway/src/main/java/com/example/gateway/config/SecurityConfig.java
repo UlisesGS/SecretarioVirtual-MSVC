@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/login").permitAll()
-                        .pathMatchers("/dates/create",
+                        .pathMatchers("/dates/create/*",
                                 "/dates/list-all",
                                 "/dates/list-by-daily-id/*").permitAll()
                         .pathMatchers("/availability/create",
@@ -30,7 +30,8 @@ public class SecurityConfig {
                                 "/users/credentials/*").permitAll()
                         .pathMatchers("/appointments/create",
                                 "/appointments/list-all").permitAll()
-                        .pathMatchers("/employees/register").permitAll()
+                        .pathMatchers("/employees/register",
+                                "/employees/credentials/*").permitAll()
                         .pathMatchers("/provisions/create-provision",
                                 "/provisions/list-all-provision").permitAll()
                         .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()

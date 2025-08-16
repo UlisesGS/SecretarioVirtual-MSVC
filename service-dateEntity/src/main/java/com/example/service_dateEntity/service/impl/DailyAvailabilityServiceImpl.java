@@ -9,6 +9,7 @@ import com.example.service_dateEntity.model.dtos.*;
 import com.example.service_dateEntity.model.enums.DaysOfTheWeek;
 import com.example.service_dateEntity.repository.DailyAvailabilityRepository;
 import com.example.service_dateEntity.service.DailyAvailabiltyService;
+import com.example.service_dateEntity.service.DateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +20,17 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.service_dateEntity.model.enums.DaysOfTheWeek.*;
-
 @Service
 @RequiredArgsConstructor
-public class DailyAvailabilityImpl implements DailyAvailabiltyService {
+public class DailyAvailabilityServiceImpl implements DailyAvailabiltyService {
     private final DailyAvailabilityRepository availabilityRepository;
     private final DailyAvailabilityMapper availabilityMapper;
+    private final DateService dateService;
     private final DateMapper dateMapper;
 
     @Override
     public ResponseDailyAvailabilityDto create(RequestCreateAvailabilityDto createAvailabilityDto) {
+        System.out.println(createAvailabilityDto);
         DailyAvailability dailyAvailability=availabilityMapper
                 .requestCreateAvailabilityToDailyAvailability(createAvailabilityDto);
         System.out.println(dailyAvailability);
@@ -65,6 +66,7 @@ public class DailyAvailabilityImpl implements DailyAvailabiltyService {
 
             createDates(startTime,endTime, dailyAvailability.getDuration(),dailyId, dailyAvailability.getDayOfTheWeek(), dailyAvailability.getRest());
         }
+
         return new ArrayList<>();//que retorne todos los dates o lo que quieras
     }
 
@@ -82,9 +84,10 @@ public class DailyAvailabilityImpl implements DailyAvailabiltyService {
 
             while (counter.plusMinutes(duration).isBefore(endTime)){
                 LocalDateTime toCreate=day.atTime(startTime);
-                new RequestCreateDateDto(duration,toCreate,dailyId,false);
+                RequestCreateDateDto requestCreateDateDto = new RequestCreateDateDto(duration,toCreate,dailyId,false);
                 counter=counter.plusMinutes(duration+rest);
                 //llama al service de date y crea un turno pasandole el request
+                dateService.createDate(requestCreateDateDto);
                 daysCreated++;
             }
         }

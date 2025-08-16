@@ -8,7 +8,7 @@ public record RequestCreateAvailabilityDto(
         String employeeId,
         DaysOfTheWeek dayOfTheWeek,
         Integer duration,
-        List<Integer> range,
+        List<Double> range,
         Integer rest
 ) {
 }

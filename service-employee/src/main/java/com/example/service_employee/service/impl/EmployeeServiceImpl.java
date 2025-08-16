@@ -27,12 +27,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public ResponseCredentialsDto getCredentials(String email) {
         System.out.println(email);
-        Employee userEntity = employeeRepository.findByEmail(email)
+        Employee employee = employeeRepository.findByEmail(email)
                 .orElseThrow(()-> new ResourceNotFoundException(
                         "Empleado con email: " + email + " no encontrado"
                 ));
-        System.out.println(userEntity);
-        ResponseCredentialsDto credentialsDto=employeeMapper.employeeToResponseCredentialsDto(userEntity);
+        System.out.println(employee);
+        ResponseCredentialsDto credentialsDto=employeeMapper.employeeToResponseCredentialsDto(employee);
         System.out.println(credentialsDto);
         return credentialsDto;
     }
