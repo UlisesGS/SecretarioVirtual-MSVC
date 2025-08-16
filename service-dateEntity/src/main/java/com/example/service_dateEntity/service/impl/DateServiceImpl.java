@@ -3,6 +3,7 @@ package com.example.service_dateEntity.service.impl;
 import com.example.service_dateEntity.mappers.DateMapper;
 import com.example.service_dateEntity.model.DateEntity;
 import com.example.service_dateEntity.model.dtos.RequestCreateDateDto;
+import com.example.service_dateEntity.model.dtos.RequestFindByDailyIdAndDate;
 import com.example.service_dateEntity.model.dtos.ResponseDateDto;
 import com.example.service_dateEntity.model.enums.DateState;
 import com.example.service_dateEntity.repository.DateRepository;
@@ -10,6 +11,7 @@ import com.example.service_dateEntity.service.DateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -38,5 +40,11 @@ public class DateServiceImpl implements DateService {
     @Override
     public List<ResponseDateDto> findByDailyAvailabilityId(String dailyId) {
         return dateMapper.listEntityToListDto(dateRepository.findByDailyAvailabilityId_Id(dailyId));
+    }
+
+
+    @Override
+    public List<ResponseDateDto> findByDailyIdAndDate(RequestFindByDailyIdAndDate request) {
+        return dateMapper.listEntityToListDto(dateRepository.findByDailyIdAndStartDate(request.dailyId(),request.date()));
     }
 }

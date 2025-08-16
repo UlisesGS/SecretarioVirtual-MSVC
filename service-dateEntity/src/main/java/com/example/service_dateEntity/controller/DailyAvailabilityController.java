@@ -39,10 +39,10 @@ public class DailyAvailabilityController {
         return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployee(request),HttpStatus.OK);
     }
 
-    @AllowedForUsersAndEmployeesAndAdmins
-    @GetMapping("/list-dates-by-day")
-    public ResponseEntity<List<ResponseDateDto>> findAllByDayAndEmployeeAndDate(@RequestBody
-                                                                                @Valid RequestFindAllByDayAndEmployeeAndDate request){
-        return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployeeAndDate(request),HttpStatus.OK);
-    }
+//    @AllowedForUsersAndEmployeesAndAdmins
+//    @GetMapping("/list-dates-by-day")
+//    public ResponseEntity<List<ResponseDateDto>> findAllByDayAndEmployeeAndDate(@RequestBody
+//                                                                                @Valid RequestFindAllByDayAndEmployeeAndDate request){
+//        return new ResponseEntity<>(dailyAvailabiltyService.findAllByDayAndEmployeeAndDate(request),HttpStatus.OK);
+//    }
 }

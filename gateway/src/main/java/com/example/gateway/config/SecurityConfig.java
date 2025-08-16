@@ -18,10 +18,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
+                        //ACA TIENEN QUE ESTAR TODAS LAS RUTAS
                         .pathMatchers("/auth/login").permitAll()
                         .pathMatchers("/dates/create/*",
                                 "/dates/list-all",
-                                "/dates/list-by-daily-id/*").permitAll()
+                                "/dates/list-by-daily-id/*",
+                                "/dates/find-by-daily-and-date").permitAll()
                         .pathMatchers("/availability/create",
                                 "/availability/list-all",
                                 "/availability/list-dates-by-day",
