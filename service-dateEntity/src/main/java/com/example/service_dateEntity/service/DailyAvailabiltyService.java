@@ -1,15 +1,10 @@
 package com.example.service_dateEntity.service;
 
 
-import com.example.service_dateEntity.model.DateEntity;
-import com.example.service_dateEntity.model.dtos.RequestCreateAvailabilityDto;
-import com.example.service_dateEntity.model.dtos.RequestFindAllDatesByEmployeeAndDay;
-import com.example.service_dateEntity.model.dtos.ResponseDailyAvailabilityDto;
-import com.example.service_dateEntity.model.dtos.ResponseDateDto;
-import com.example.service_dateEntity.model.enums.DaysOfTheWeek;
-import org.springframework.data.repository.query.Param;
+import com.example.service_dateEntity.model.dtos.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,4 +13,5 @@ public interface DailyAvailabiltyService {
     List<ResponseDailyAvailabilityDto>getAll();
     List<ResponseDateDto> findAllByDayAndEmployee(RequestFindAllDatesByEmployeeAndDay request);
     List<ResponseDateDto> createDatesByDaily(String dailyId);
+    List<ResponseDateDto> findAllByDayAndEmployeeAndDate(RequestFindAllByDayAndEmployeeAndDate request);
 }

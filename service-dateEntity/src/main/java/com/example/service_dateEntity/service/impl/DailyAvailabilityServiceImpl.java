@@ -59,15 +59,27 @@ public class DailyAvailabilityServiceImpl implements DailyAvailabiltyService {
         DailyAvailability dailyAvailability=availabilityRepository.findById(dailyId)
                 .orElseThrow(()->new RuntimeException("daily no encontrado"));
         List<Double>rangeList=dailyAvailability.getRange();
+        System.out.println("tamaño de la lista: "+rangeList.size());
 
-        for (int i = 0; i <rangeList.size() ; i++) {
+        for (int i = 0; i <(rangeList.size()/2) ; i++) {
+            System.out.println("valor de i: "+i);
             LocalTime startTime=toLOcalTime(rangeList.get(i*2));
             LocalTime endTime=toLOcalTime(rangeList.get((i*2)+1));
+            System.out.println("valor de start: "+startTime);
+            System.out.println("valor de end: "+endTime);
+
 
             createDates(startTime,endTime, dailyAvailability.getDuration(),dailyId, dailyAvailability.getDayOfTheWeek(), dailyAvailability.getRest());
         }
 
         return new ArrayList<>();//que retorne todos los dates o lo que quieras
+    }
+
+    @Override
+    public List<ResponseDateDto> findAllByDayAndEmployeeAndDate(RequestFindAllByDayAndEmployeeAndDate request) {
+        List<DateEntity>dateEntityList=availabilityRepository
+                .findAllByDayAndEmployeeAndDate(request.dayOfTheWeek(), request.employeeId(), request.dateOfMonth());
+        return dateMapper.listEntityToListDto(dateEntityList);
     }
 
     private LocalTime toLOcalTime(Double aDouble){
@@ -77,13 +89,15 @@ public class DailyAvailabilityServiceImpl implements DailyAvailabiltyService {
     }
 
     private int createDates(LocalTime startTime, LocalTime endTime, Integer duration, String dailyId, DaysOfTheWeek daysOfTheWeek, Integer rest){
-        LocalTime counter=startTime;
         Integer daysCreated=0;
         List<LocalDate>listOfDays=getAllDatesForDayInMonth(2025,8,toDayOfWeek(daysOfTheWeek));
+        System.out.println("dias a crear: "+listOfDays.size());
         for (LocalDate day:listOfDays){ //recorre todos los dias
-
+            LocalTime counter=startTime;
+            System.out.println("dia: "+day);
             while (counter.plusMinutes(duration).isBefore(endTime)){
-                LocalDateTime toCreate=day.atTime(startTime);
+                System.out.println("valor de counter: "+counter);
+                LocalDateTime toCreate=day.atTime(counter);
                 RequestCreateDateDto requestCreateDateDto = new RequestCreateDateDto(duration,toCreate,dailyId,false);
                 counter=counter.plusMinutes(duration+rest);
                 //llama al service de date y crea un turno pasandole el request
