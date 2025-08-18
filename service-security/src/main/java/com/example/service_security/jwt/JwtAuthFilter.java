@@ -39,6 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
+        System.out.println("gateway hija de puta");
         try {
             String jwt = getJwtFromRequest(request);
 
