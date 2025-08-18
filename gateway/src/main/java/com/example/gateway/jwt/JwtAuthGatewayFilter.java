@@ -2,6 +2,7 @@ package com.example.gateway.jwt;
 
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-public class JwtAuthGatewayFilter implements GlobalFilter {
+public class JwtAuthGatewayFilter implements GlobalFilter, Ordered {
 
     private final JwtProvider jwtProvider;
 
@@ -24,22 +25,13 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getPath().toString();
         System.out.println("Request Path: " + path);
-        // Rutas públicas (no validar)
+
+        // Rutas públicas
         if (path.startsWith("/auth/login") ||
-                path.startsWith("/dates/create") || path.startsWith("/dates/list-all") ||
-
-                path.startsWith("/employees/register") || path.startsWith("/employee/credentials/") ||
-
-                path.startsWith("/availability/create") || path.startsWith("/availability/list-all") ||
-                
-                path.startsWith("/users/credentials/") || path.startsWith("/users/register") ||
-
-                path.startsWith("/appointments/create") || path.startsWith("/appointments/list-all") ||
-
-                path.startsWith("/provisions/create-provision") || path.startsWith("/provisions/list-all-provision") ||
-
-                path.startsWith("/swagger") || path.startsWith("/v3/api-docs")) {
-
+                path.startsWith("/employees/register") ||
+                path.startsWith("/users/register") ||
+                path.startsWith("/swagger") ||
+                path.startsWith("/v3/api-docs")) {
             return chain.filter(exchange);
         }
 
@@ -48,24 +40,12 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
+
         String token = authHeader.substring(7);
+        System.out.println("JWT recibido: " + token);
 
-//        String token = null;
-//        HttpCookie cookie = request.getCookies().getFirst("token");
-//        System.out.println(cookie);
-//        if (cookie != null) {
-//            token = cookie.getValue();
-//            System.out.println(token);
-//        }
-//
-//        if (token == null) {
-//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-//            return exchange.getResponse().setComplete();
-//        }
-
-        System.out.println(token);
         if (!jwtProvider.isTokenValid(token)) {
-            System.out.println("entro");
+            System.out.println("Token inválido");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -78,8 +58,14 @@ public class JwtAuthGatewayFilter implements GlobalFilter {
                 .header("X-User-Email", email)
                 .header("X-User-Role", role)
                 .build();
-        System.out.println("final");
+
+        System.out.println("Token válido, request modificado con headers extra");
+
         return chain.filter(exchange.mutate().request(modifiedRequest).build());
     }
 
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 }

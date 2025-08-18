@@ -15,30 +15,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        // OJO: aquí no usamos authenticated() porque ya lo maneja JwtAuthGatewayFilter
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        //ACA TIENEN QUE ESTAR TODAS LAS RUTAS
-                        .pathMatchers("/auth/login").permitAll()
-                        .pathMatchers("/dates/create/*",
-                                "/dates/list-all",
-                                "/dates/list-by-daily-id/*",
-                                "/dates/find-by-daily-and-date").permitAll()
-                        .pathMatchers("/availability/create",
-                                "/availability/list-all",
-                                "/availability/list-dates-by-day",
-                                "/availability/list-dates").permitAll()
-                        .pathMatchers("/users/register",
-                                "/users/get-all",
-                                "/users/credentials/*").permitAll()
-                        .pathMatchers("/appointments/create",
-                                "/appointments/list-all").permitAll()
-                        .pathMatchers("/employees/register",
-                                "/employees/credentials/*").permitAll()
-                        .pathMatchers("/provisions/create-provision",
-                                "/provisions/list-all-provision").permitAll()
-                        .pathMatchers("/swagger/**", "/v3/api-docs/**").permitAll()
-                        .anyExchange().authenticated()
+                        .anyExchange().permitAll()
                 )
                 .build();
     }

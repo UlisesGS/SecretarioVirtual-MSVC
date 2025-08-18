@@ -90,7 +90,7 @@ public class DailyAvailabilityServiceImpl implements DailyAvailabiltyService {
 
     private int createDates(LocalTime startTime, LocalTime endTime, Integer duration, String dailyId, DaysOfTheWeek daysOfTheWeek, Integer rest){
         Integer daysCreated=0;
-        List<LocalDate>listOfDays=getAllDatesForDayInMonth(2025,8,toDayOfWeek(daysOfTheWeek));
+        List<LocalDate>listOfDays=getAllDatesForDayInMonth(2025,8,toDayOfWeek(daysOfTheWeek)); //agregarlo al request de front
         System.out.println("dias a crear: "+listOfDays.size());
         for (LocalDate day:listOfDays){ //recorre todos los dias
             LocalTime counter=startTime;
